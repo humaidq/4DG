@@ -1,7 +1,8 @@
-package movie
+package models
 
 import (
 	"io/ioutil"
+	"log"
 
 	"github.com/BurntSushi/toml"
 )
@@ -19,10 +20,28 @@ type TimestampEffect struct {
 	EffectLength int    `toml:"length_ms"` // in milliseconds
 }
 
-// Effect is used to give pins a user-friendly name.
-type Effect struct {
-	EffectName string
-	pins       []int
+var (
+	// LoadedMovies An array of FDMovies
+	LoadedMovies [128]FDMovie
+)
+
+// Initialize Loads the movies and configuration from file.
+func Initialize() {
+	LoadConfig()
+	scriptsDir, err := ioutil.ReadDir("./scripts")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var i int
+	for _, f := range scriptsDir {
+		mov, err := Decode("./scripts/" + f.Name())
+		if err != nil {
+			log.Fatal("Unable to "+f.Name()+": ", err)
+		}
+		LoadedMovies[i] = mov
+		i++
+	}
 }
 
 // Decode Converts a movie script file to an FDMovie struct

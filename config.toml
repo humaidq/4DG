@@ -1,0 +1,12 @@
+# This is a demo config file.
+[[effects_labels]]
+  effect_label = "air"
+  pins = [14, 15]
+
+[[effects_labels]]
+  effect_label = "strobe"
+  pins = [18, 23]
+
+[[effects_labels]]
+  effect_label = "vibrate"
+  pins = [24, 25]

@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	"github.com/humaidq/4DG/movie"
+	"github.com/humaidq/4DG/models"
 	"github.com/spf13/cobra"
 )
 
@@ -31,20 +31,18 @@ var newCmd = &cobra.Command{
 		fmt.Scan(&length)
 
 		// This will contain the generated movie script
-		newMovie := movie.FDMovie{MovieName: name, MovieLength: length}
+		newMovie := models.FDMovie{MovieName: name, MovieLength: length}
 
 		fmt.Print("Now you will have to define the effects, assuming you already have effect names and pins defined in your configuration file.\n" +
 			"The position is the movie timestamp in seconds point milliseconds. Such as 1044.8 is a valid position, 43.82 is not.\n" +
 			"The effect name will match the effect name given to the pin in your configuration.\nThe length would be in milliseconds.\nEnter 'q' followed by enter when done.\n\n")
 
-		effectItr := 1 // To keep track of the effect, for user convinence.
-
 		// Get all the positions and effects
-		newMovie.Effects = make(map[string]movie.TimestampEffect)
-		for {
+		newMovie.Effects = make(map[string]models.TimestampEffect)
+		for i := 1; ; i++ {
 			var pos, eff string
 			var effLen int
-			fmt.Println("Effect #", effectItr)
+			fmt.Println("Effect #", i)
 
 			fmt.Print("Position: ")
 			fmt.Scanln(&pos)
@@ -61,10 +59,8 @@ var newCmd = &cobra.Command{
 			fmt.Print("Length of effect (in ms): ")
 			fmt.Scanln(&effLen)
 
-			ts := movie.TimestampEffect{EffectName: eff, EffectLength: effLen}
+			ts := models.TimestampEffect{EffectName: eff, EffectLength: effLen}
 			newMovie.Effects[pos] = ts
-
-			effectItr = effectItr + 1
 		}
 
 		// Convert the whole movie script to TOML format
