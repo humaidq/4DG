@@ -1,0 +1,13 @@
+movie_name = "Benji (2018)"
+movie_length = 120
+
+[effects]
+  [effects.102]
+    effect_name = "effect"
+    length_ms = 0
+  [effects.2223]
+    effect_name = "test"
+    length_ms = 444
+  [effects.232]
+    effect_name = "effect"
+    length_ms = 0

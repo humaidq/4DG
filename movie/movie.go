@@ -1,6 +1,10 @@
 package movie
 
-import "container/list"
+import (
+	"io/ioutil"
+
+	"github.com/BurntSushi/toml"
+)
 
 // FDMovie holds all the information of a 4D movie script.
 type FDMovie struct {
@@ -21,14 +25,15 @@ type Effect struct {
 	pins       []int
 }
 
-var (
-	// LoadedEffects A list of Effects
-	LoadedEffects list.List
-	// LoadedMovies A list of FDMovie
-	LoadedMovies list.List
-)
-
-// Initialize Loads the movies and configuration from file.
-func Initialize() {
-
+// Decode Converts a movie script file to an FDMovie struct
+func Decode(fileName string) (FDMovie, error) {
+	var mov FDMovie
+	b, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		return FDMovie{}, err
+	}
+	if _, err := toml.Decode(string(b), &mov); err != nil {
+		return FDMovie{}, err
+	}
+	return mov, nil
 }
