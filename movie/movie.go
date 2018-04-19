@@ -4,15 +4,15 @@ import "container/list"
 
 // FDMovie holds all the information of a 4D movie script.
 type FDMovie struct {
-	MovieName   string                     `json:"movie_name"`
-	MovieLength int                        `json:"length"`
-	Effects     map[string]TimestampEffect `json:"effects"`
+	MovieName   string                     `toml:"movie_name"`
+	MovieLength int                        `toml:"movie_length"` // in minutes
+	Effects     map[string]TimestampEffect `toml:"effects"`
 }
 
 // TimestampEffect holds a specific effect at a specific timestamp.
 type TimestampEffect struct {
-	EffectName   string `json:"effect_name"`
-	EffectLength int    `json:"effect_length"` // in milliseconds
+	EffectName   string `toml:"effect_name"`
+	EffectLength int    `toml:"length_ms"` // in milliseconds
 }
 
 // Effect is used to give pins a user-friendly name.
