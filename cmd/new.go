@@ -81,7 +81,6 @@ var newCmd = &cobra.Command{
 		// Save file
 		ioutil.WriteFile("scripts/"+fileName, buf.Bytes(), 0644)
 		fmt.Println("File saved at 'scripts/" + fileName + "'")
-
 	},
 }
 

@@ -6,10 +6,12 @@ import (
 	"log"
 
 	"github.com/BurntSushi/toml"
+	rpio "github.com/stianeikeland/go-rpio"
 )
 
 type Config struct {
-	Effects []Effect `toml:"effects_labels"`
+	ActiveHigh bool
+	Effects    []Effect `toml:"effects_labels"`
 }
 
 // Effect is used to give pins a user-friendly name.
@@ -21,6 +23,7 @@ type Effect struct {
 // Conf A loaded config struct from file.
 var Conf Config
 var isRPI bool
+var loadedPins map[int]rpio.Pin
 
 // LoadConfig Loads configuration from file and stores it into variable Conf
 func LoadConfig() {
@@ -33,5 +36,14 @@ func LoadConfig() {
 	}
 	if isRPI := GPIOCheck(); !isRPI {
 		fmt.Println("Will only run simulation mode.")
+	} else {
+		for _, effect := range Conf.Effects {
+			for _, pin := range effect.Pins {
+				rpin := rpio.Pin(pin)
+				loadedPins[pin] = rpin
+				pinOff(pin)
+			}
+		}
 	}
+
 }

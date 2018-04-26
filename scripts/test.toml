@@ -1,13 +1,13 @@
-movie_name = "Benji (2018)"
-movie_length = 120
+movie_name = "test"
+movie_length = 1
 
 [effects]
-  [effects.102]
-    effect_name = "effect"
-    length_ms = 0
-  [effects.2223]
-    effect_name = "test"
-    length_ms = 444
-  [effects.232]
-    effect_name = "effect"
-    length_ms = 0
+  [effects.3]
+    effect_name = "air"
+    length_ms = 2
+  [effects."1.5"]
+    effect_name = "air"
+    length_ms = 2000
+  [effects."8.5"]
+    effect_name = "air"
+    length_ms = 500

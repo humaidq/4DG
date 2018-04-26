@@ -42,7 +42,7 @@ var configCmd = &cobra.Command{
 			effects[i] = models.Effect{EffectName: name, Pins: pins}
 		}
 
-		config := models.Config{Effects: effects}
+		config := models.Config{Effects: effects, ActiveHigh: true}
 
 		// Convert config struct to TOML format
 		buf := new(bytes.Buffer)
