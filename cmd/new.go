@@ -38,7 +38,7 @@ var newCmd = &cobra.Command{
 			"The effect name will match the effect name given to the pin in your configuration.\nThe length would be in milliseconds.\nEnter 'q' followed by enter when done.\n\n")
 
 		// Get all the positions and effects
-		newMovie.Effects = make(map[string]models.TimestampEffect)
+		newMovie.Effects = make(map[string]*models.TimestampEffect)
 		for i := 1; ; i++ {
 			var pos, eff string
 			var effLen int
@@ -60,7 +60,7 @@ var newCmd = &cobra.Command{
 			fmt.Scanln(&effLen)
 
 			ts := models.TimestampEffect{EffectName: eff, EffectLength: effLen}
-			newMovie.Effects[pos] = ts
+			newMovie.Effects[pos] = &ts
 		}
 
 		// Convert the whole movie script to TOML format

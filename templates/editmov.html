@@ -8,6 +8,7 @@
           </nav>
         <div class="jumbotron">
                 <h3>{{ .Movie.MovieName }}</h3>
+                
                 <table class="table">
                         <thead>
                                 <tr>
@@ -18,17 +19,18 @@
                                 </tr>
                         </thead>
                         <tbody>
-                                {{ range $key, $effect := .Movie.Effects }}
+                                        {{range $i, $a := .Sorted}}
                                 <tr>
-                                        <td>{{ $key }}</td>
-                                        <td>{{ .EffectName }}</td>
-                                        <td>{{ .EffectLength }}</td>
-                                        <td><a href="/edit/{{ $.Movie.MovieName }}/{{ $key }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a></td>
+                                        <td>{{ $a.Index }}</td>
+                                        <td>{{ $a.Timestamp.EffectName }}</td>
+                                        <td>{{ $a.Timestamp.EffectLength }}</td>
+                                        <td><a href="/edit/{{ $.Movie.MovieName }}/{{ $a.Index }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a></td>
                                 </tr>
-                                {{ end }}
+                                {{end}}
                         </tbody>
 
                 </table>
+                <p><a href="/edit/{{ .Movie.MovieName }}/new" class="btn btn-success">Add new effect</a></p>
 
         </div>
 </div>

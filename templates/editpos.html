@@ -9,7 +9,7 @@
     </nav>
     <div class="jumbotron">
         <h4>Edit effect at {{ .Pos }} for {{ .Movie.MovieName }}</h4>
-        <form>
+        <form method="POST">
             <div class="form-group">
                 <label for="effect">Effect name</label>
                 <input class="form-control" id="effect" name="effect" value="{{ .Effect.EffectName }}">

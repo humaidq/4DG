@@ -1,0 +1,30 @@
+{{ template "base/top" . }}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/edit/{{ .Movie.MovieName }}">Edit {{ .Movie.MovieName }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add new effect</li>
+        </ol>
+    </nav>
+    <div class="jumbotron">
+        <h4>Add new effect in {{ .Movie.MovieName }}</h4>
+        <form method="POST">
+            <div class="form-group">
+                        <label for="effect">Position</label>
+                        <input class="form-control" id="effect" name="pos">
+            </div>
+            <div class="form-group">
+                <label for="effect">Effect name</label>
+                <input class="form-control" id="effect" name="effect">
+            </div>
+            <div class="form-group">
+                <label for="effect">Length in milliseconds</label>
+                <input class="form-control" id="length" name="length">
+            </div>
+
+                    <button type="submit" class="btn btn-success btn-block">Add</button>
+        </form>
+    </div>
+</div>
+{{ template "base/bottom" . }}

@@ -11,9 +11,9 @@ import (
 
 // FDMovie holds all the information of a 4D movie script.
 type FDMovie struct {
-	MovieName   string                     `toml:"movie_name"`
-	MovieLength int                        `toml:"movie_length"` // in minutes
-	Effects     map[string]TimestampEffect `toml:"effects"`
+	MovieName   string                      `toml:"movie_name"`
+	MovieLength int                         `toml:"movie_length"` // in minutes
+	Effects     map[string]*TimestampEffect `toml:"effects"`
 }
 
 // TimestampEffect holds a specific effect at a specific timestamp.
