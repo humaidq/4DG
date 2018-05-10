@@ -1,33 +1,35 @@
 {{ template "base/top" . }}
 <div class="container">
-      <ul class="collection with-header">
-            <li class="collection-header">
-                    <h4>{{ .Movie.MovieName }}</h4>
-            </li>
-            <table>
-                    <thead>
-                      <tr>
-                          <th>Position</th>
-                          <th>Effect</th>
-                          <th>Length (ms)</th>
-                          <th></th>
-                      </tr>
-                    </thead>
-            
-                    <tbody>
-                            {{ range $key, $effect := .Movie.Effects }}
-                            <tr>
-                                    <td>{{ $key }}</td>
-                                    <td>{{ .EffectName }}</td>
-                                    <td>{{ .EffectLength }}</td>
-                                    <td><a href="/edit/{{ $.Movie.MovieName }}/{{ $key }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a></td>
-                                  </tr>
-                  
-                            {{ end }}
-        
-                    </tbody>
-                  </table>
-           
-      </ul>
+        <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Edit {{ .Movie.MovieName }}</li>
+                </ol>
+          </nav>
+        <div class="jumbotron">
+                <h3>{{ .Movie.MovieName }}</h3>
+                <table class="table">
+                        <thead>
+                                <tr>
+                                        <th scope="col">Position</th>
+                                        <th scope="col">Effect</th>
+                                        <th scope="col">Length (ms)</th>
+                                        <th scope="col">Edit</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                {{ range $key, $effect := .Movie.Effects }}
+                                <tr>
+                                        <td>{{ $key }}</td>
+                                        <td>{{ .EffectName }}</td>
+                                        <td>{{ .EffectLength }}</td>
+                                        <td><a href="/edit/{{ $.Movie.MovieName }}/{{ $key }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a></td>
+                                </tr>
+                                {{ end }}
+                        </tbody>
+
+                </table>
+
+        </div>
 </div>
 {{ template "base/bottom" . }}

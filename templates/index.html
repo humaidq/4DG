@@ -1,19 +1,29 @@
 {{ template "base/top" . }}
 <div class="container">
-      <ul class="collection with-header">
-            <li class="collection-header">
-                  <h4>Movie Scrips</h4>
-            </li>
-            {{ range .Movies }}{{ if .MovieName }}
-            <li class="collection-item">
-                  <div>{{ .MovieName }}
-                        <div class="secondary-content">
-                                    <a href="/edit/{{ .MovieName }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a>
-                                    <a href="#!" class="btn-small waves-effect waves-light"><i class="far fa-play-circle"></i></a></div>
-                        </div>
-                       
-            </li>
-            {{ end }}{{ end }}
-      </ul>
+      <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                  <li class="breadcrumb-item active" aria-current="page">Home</li>
+            </ol>
+      </nav>
+      <div class="jumbotron">
+            <h2>Movie Scrips</h2>
+            <table class="table">
+                  <thead>
+                        <tr>
+                              <th scope="col">Movie Name</th>
+                              <th scope="col">Actions</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        {{ range .Movies }}{{ if .MovieName }}
+                        <tr>
+                              <td>{{ .MovieName }}</td>
+                              <td><a href="/edit/{{ .MovieName }}"><i class="far fa-edit"></i></a> <a href="/play/{{ .MovieName }}"><i class="far fa-play-circle"></i></a></div>
+      </td>
+      </tr>
+      {{ end }}{{ end }}
+      </tbody>
+      </table>
+</div>
 </div>
 {{ template "base/bottom" . }}
