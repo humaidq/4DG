@@ -1,6 +1,7 @@
 package models
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -22,9 +23,16 @@ type TimestampEffect struct {
 	EffectLength int    `toml:"length_ms"` // in milliseconds
 }
 
+// LoadedMovie holds a Movie struct and the name of the file it is loaded from.
+type LoadedMovie struct {
+	Movie    FDMovie
+	Filename string
+}
+
 var (
 	// LoadedMovies An array of FDMovies
-	LoadedMovies [128]FDMovie
+	LoadedMovies     [128]LoadedMovie
+	LoadedMoviesSize int // todo replace with function
 )
 
 // Initialize Loads the movies and configuration from file.
@@ -35,15 +43,17 @@ func Initialize() {
 		log.Fatal(err)
 	}
 
-	var i int
 	for _, f := range scriptsDir {
 		mov, err := Decode("./scripts/" + f.Name())
 		if err != nil {
 			log.Fatal("Unable to "+f.Name()+": ", err)
 		}
-		LoadedMovies[i] = mov
+		if mov.Effects == nil {
+			mov.Effects = make(map[string]*TimestampEffect)
+		}
+		LoadedMovies[LoadedMoviesSize] = LoadedMovie{mov, f.Name()}
 		//RunMovie(mov)
-		i++
+		LoadedMoviesSize++
 	}
 }
 
@@ -69,13 +79,38 @@ type MovieTime struct {
 	dec int
 }
 
+// GetMovie using it's name from the loaded movies map.
 func GetMovie(movieName string) (FDMovie, bool) {
-	for _, movie := range LoadedMovies {
-		if movie.MovieName == movieName {
-			return movie, true
+	for _, lmovie := range LoadedMovies {
+		if lmovie.Movie.MovieName == movieName {
+			return lmovie.Movie, true
 		}
 	}
 	return FDMovie{}, false
+}
+
+// GetLoadedMovie using it's name from.
+func GetLoadedMovie(movieName string) (LoadedMovie, bool) {
+	for _, lmovie := range LoadedMovies {
+		if lmovie.Movie.MovieName == movieName {
+			return lmovie, true
+		}
+	}
+	return LoadedMovie{}, false
+}
+
+// SaveMovie to scripts folder.
+func SaveMovie(movieName string) {
+	mov, ok := GetLoadedMovie(movieName)
+	if !ok {
+		return
+	}
+
+	buf := new(bytes.Buffer)
+	if err := toml.NewEncoder(buf).Encode(mov.Movie); err != nil {
+		log.Fatal(err)
+	}
+	ioutil.WriteFile("scripts/"+mov.Filename, buf.Bytes(), 0644)
 }
 
 // RunMovie will run the specified movie as long as there is no other movie running.
@@ -96,7 +131,6 @@ func RunMovie(movie FDMovie) {
 			incrementTime()
 			time.Sleep(100 * time.Millisecond)
 		}
-
 	}
 }
 
@@ -111,6 +145,9 @@ func incrementTime() {
 
 // MillisecondsToPosition converts Milliseconds to position format.
 func formatMovieTime() string {
+	if currentMovieTime.dec == 0 {
+		return fmt.Sprint(currentMovieTime.sec)
+	}
 	return fmt.Sprint(currentMovieTime.sec) + "." + fmt.Sprint(currentMovieTime.dec)
 }
 

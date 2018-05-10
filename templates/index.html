@@ -15,15 +15,16 @@
                         </tr>
                   </thead>
                   <tbody>
-                        {{ range .Movies }}{{ if .MovieName }}
+                        {{ range .Movies }}{{ if .Movie.MovieName }}
                         <tr>
-                              <td>{{ .MovieName }}</td>
-                              <td><a href="/edit/{{ .MovieName }}"><i class="far fa-edit"></i></a> <a href="/play/{{ .MovieName }}"><i class="far fa-play-circle"></i></a></div>
+                              <td>{{ .Movie.MovieName }}</td>
+                              <td><a href="/edit/{{ .Movie.MovieName }}"><i class="far fa-edit"></i></a> <a href="/play/{{ .Movie.MovieName }}"><i class="far fa-play-circle"></i></a></div>
       </td>
       </tr>
       {{ end }}{{ end }}
       </tbody>
       </table>
+      <p><a href="/new" class="btn btn-success">Create new script</a></p>
 </div>
 </div>
 {{ template "base/bottom" . }}

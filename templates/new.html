@@ -1,0 +1,34 @@
+{{ template "base/top" . }}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Create new script</li>
+        </ol>
+    </nav>
+    <div class="jumbotron">
+        <h4>Create new movie script</h4>
+        <form method="POST">
+            <div class="form-group">
+                        <label for="name">Movie name and year</label>
+                        <input class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="length">Length of movie (minutes)</label>
+                <input class="form-control" id="length" name="length">
+            </div>
+            <div class="form-group">
+                    <label for="file">Script file name</label>
+                    <div class="input-group">
+                            <input type="text" class="form-control" aria-describedby="ext" id="file" name="file">
+                            <div class="input-group-append">
+                              <span class="input-group-text" id="ext">.toml</span>
+                            </div>
+                    </div>     
+            </div>
+
+                    <button type="submit" class="btn btn-success btn-block">Create</button>
+        </form>
+    </div>
+</div>
+{{ template "base/bottom" . }}

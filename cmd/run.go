@@ -98,6 +98,8 @@ func runServer() {
 		mov.Effects[ctx.Params("pos")].EffectLength = len
 		mov.Effects[ctx.Params("pos")].EffectName = ctx.Query("effect")
 
+		models.SaveMovie(ctx.Params("movie"))
+
 		ctx.Redirect("/edit/" + ctx.Params("movie"))
 	})
 
@@ -110,6 +112,8 @@ func runServer() {
 		}
 
 		delete(mov.Effects, ctx.Params("pos"))
+
+		models.SaveMovie(ctx.Params("movie"))
 
 		ctx.Redirect("/edit/" + ctx.Params("movie"))
 	})
@@ -140,7 +144,29 @@ func runServer() {
 		ts := models.TimestampEffect{EffectName: ctx.Query("effect"), EffectLength: len}
 		mov.Effects[ctx.Query("pos")] = &ts
 
+		models.SaveMovie(ctx.Params("movie"))
+
 		ctx.Redirect("/edit/" + ctx.Params("movie"))
+	})
+
+	m.Get("/new", func(ctx *macaron.Context) {
+		ctx.Data["Title"] = "New movie script - 4DG"
+		ctx.HTML(200, "new")
+	})
+
+	m.Post("/new", func(ctx *macaron.Context) {
+		i, err := strconv.Atoi(ctx.Query("length"))
+		if err != nil {
+			return
+		}
+		newMovie := models.FDMovie{MovieName: ctx.Query("name"), MovieLength: i}
+		newMovie.Effects = make(map[string]*models.TimestampEffect)
+
+		lMovie := models.LoadedMovie{newMovie, ctx.Query("file") + ".toml"}
+		models.LoadedMovies[models.LoadedMoviesSize] = lMovie
+		models.LoadedMoviesSize++
+		models.SaveMovie(ctx.Query("name"))
+		ctx.Redirect("/edit/" + ctx.Query("name"))
 	})
 
 	// Run Macaron HTTP Server
