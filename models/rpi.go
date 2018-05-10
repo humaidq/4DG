@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	rpio "github.com/stianeikeland/go-rpio"
@@ -22,43 +21,34 @@ func GPIOCheck() bool {
 func RunEffectGPIO(effect Effect, length time.Duration) {
 	for _, pin := range effect.Pins {
 		go func(pin int) {
-			pinOn(pin)
+			rpin := rpio.Pin(pin)
+			pinOn(rpin)
 			time.Sleep(time.Millisecond * length)
-			pinOff(pin)
+			pinOff(rpin)
 		}(pin)
 	}
 }
 
-func pinOff(pin int) {
+func pinOff(pin rpio.Pin) {
 	if !isRPI {
 		fmt.Println("Simulation: Pin ", pin, " set to off")
 		return
 	}
-	rpin, ok := loadedPins[pin]
-	if !ok {
-		log.Fatal("No pin ", pin, " in map!")
-		return
-	}
 	if Conf.ActiveHigh {
-		rpin.High()
+		pin.High()
 	} else {
-		rpin.Low()
+		pin.Low()
 	}
 }
 
-func pinOn(pin int) {
+func pinOn(pin rpio.Pin) {
 	if !isRPI {
 		fmt.Println("Simulation: Pin ", pin, " set to on")
 		return
 	}
-	rpin, ok := loadedPins[pin]
-	if !ok {
-		log.Fatal("No pin ", pin, " in map!")
-		return
-	}
 	if Conf.ActiveHigh {
-		rpin.Low()
+		pin.Low()
 	} else {
-		rpin.High()
+		pin.High()
 	}
 }

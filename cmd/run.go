@@ -34,6 +34,29 @@ func runServer() {
 		ctx.HTML(200, "play")
 	})
 
+	m.Get("/edit/:movie", func(ctx *macaron.Context) {
+		ctx.Data["Title"] = "Edit " + ctx.Params("movie") + " - 4DG"
+
+		mov, ok := models.GetMovie(ctx.Params("movie"))
+		if !ok {
+			ctx.Redirect("/404")
+			return
+		}
+		ctx.Data["Movie"] = mov
+		ctx.HTML(200, "editmov")
+	})
+
+	m.Get("/edit/:movie/:", func(ctx *macaron.Context) {
+		ctx.Data["Title"] = "Edit " + ctx.Params("movie") + " - 4DG"
+		/*mov, ok := models.GetMovie(ctx.Params("movie"))
+		if !ok {
+			ctx.Redirect("/404")
+			return
+		}*/
+
+		ctx.HTML(200, "editmov")
+	})
+
 	// Run Macaron HTTP Server
 	m.Run("0.0.0.0")
 }

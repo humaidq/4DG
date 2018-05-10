@@ -42,7 +42,7 @@ func Initialize() {
 			log.Fatal("Unable to "+f.Name()+": ", err)
 		}
 		LoadedMovies[i] = mov
-		RunMovie(mov)
+		//RunMovie(mov)
 		i++
 	}
 }
@@ -67,6 +67,15 @@ var currentMovieTime MovieTime
 type MovieTime struct {
 	sec int
 	dec int
+}
+
+func GetMovie(movieName string) (FDMovie, bool) {
+	for _, movie := range LoadedMovies {
+		if movie.MovieName == movieName {
+			return movie, true
+		}
+	}
+	return FDMovie{}, false
 }
 
 // RunMovie will run the specified movie as long as there is no other movie running.

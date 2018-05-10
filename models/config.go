@@ -22,8 +22,7 @@ type Effect struct {
 
 // Conf A loaded config struct from file.
 var Conf Config
-var isRPI bool
-var loadedPins map[int]rpio.Pin
+var isRPI = true
 
 // LoadConfig Loads configuration from file and stores it into variable Conf
 func LoadConfig() {
@@ -34,16 +33,17 @@ func LoadConfig() {
 	if _, err := toml.Decode(string(b), &Conf); err != nil {
 		log.Fatal(err)
 	}
-	if isRPI := GPIOCheck(); !isRPI {
-		fmt.Println("Will only run simulation mode.")
-	} else {
+	if GPIOCheck() {
 		for _, effect := range Conf.Effects {
 			for _, pin := range effect.Pins {
 				rpin := rpio.Pin(pin)
-				loadedPins[pin] = rpin
-				pinOff(pin)
+				rpin.Output()
+				pinOff(rpin)
 			}
 		}
+	} else {
+		fmt.Println("Will only run simulation mode.")
+		isRPI = false
 	}
 
 }

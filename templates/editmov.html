@@ -1,0 +1,33 @@
+{{ template "base/top" . }}
+<div class="container">
+      <ul class="collection with-header">
+            <li class="collection-header">
+                    <h4>{{ .Movie.MovieName }}</h4>
+            </li>
+            <table>
+                    <thead>
+                      <tr>
+                          <th>Position</th>
+                          <th>Effect</th>
+                          <th>Length (ms)</th>
+                          <th></th>
+                      </tr>
+                    </thead>
+            
+                    <tbody>
+                            {{ range $key, $effect := .Movie.Effects }}
+                            <tr>
+                                    <td>{{ $key }}</td>
+                                    <td>{{ .EffectName }}</td>
+                                    <td>{{ .EffectLength }}</td>
+                                    <td><a href="/edit/{{ $.Movie.MovieName }}/{{ $key }}" class="btn-small waves-effect waves-light "><i class="far fa-edit"></i></a></td>
+                                  </tr>
+                  
+                            {{ end }}
+        
+                    </tbody>
+                  </table>
+           
+      </ul>
+</div>
+{{ template "base/bottom" . }}
