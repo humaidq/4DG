@@ -2,12 +2,12 @@ movie_name = "test"
 movie_length = 1
 
 [effects]
-  [effects.3]
+  [effects.2]
     effect_name = "air"
-    length_ms = 2
-  [effects."1.5"]
+    length_ms = 500
+  [effects.4]
     effect_name = "air"
-    length_ms = 2000
-  [effects."8.5"]
+    length_ms = 1000
+  [effects.6]
     effect_name = "air"
     length_ms = 500

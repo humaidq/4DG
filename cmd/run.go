@@ -29,12 +29,32 @@ func runServer() {
 	m.Get("/", func(ctx *macaron.Context) {
 		ctx.Data["Title"] = "4DG Dashboard"
 		ctx.Data["Movies"] = models.LoadedMovies
+		ctx.Data["Simulation"] = models.GPIOCheck
 		ctx.HTML(200, "index")
 	})
 
 	m.Get("/play/:movie", func(ctx *macaron.Context) {
 		ctx.Data["Title"] = "Run movie script - 4DG"
+		mov, ok := models.GetMovie(ctx.Params("movie"))
+		if !ok {
+			ctx.Redirect("/404")
+			return
+		}
+		go models.RunMovie(mov)
+
+		ctx.Data["Movie"] = mov
+
 		ctx.HTML(200, "play")
+	})
+
+	m.Get("/timer", func(ctx *macaron.Context) {
+		ctx.Data["Timer"] = models.FormatMovieTime()
+		ctx.HTML(200, "timer")
+	})
+
+	m.Get("/adj/:offset", func(ctx *macaron.Context) {
+
+		ctx.Redirect("/404")
 	})
 
 	m.Get("/edit/:movie", func(ctx *macaron.Context) {
@@ -162,7 +182,7 @@ func runServer() {
 		newMovie := models.FDMovie{MovieName: ctx.Query("name"), MovieLength: i}
 		newMovie.Effects = make(map[string]*models.TimestampEffect)
 
-		lMovie := models.LoadedMovie{newMovie, ctx.Query("file") + ".toml"}
+		lMovie := models.LoadedMovie{Movie: newMovie, Filename: ctx.Query("file") + ".toml"}
 		models.LoadedMovies[models.LoadedMoviesSize] = lMovie
 		models.LoadedMoviesSize++
 		models.SaveMovie(ctx.Query("name"))

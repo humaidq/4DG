@@ -119,8 +119,8 @@ func RunMovie(movie FDMovie) {
 		runningMovie = true
 		currentMovieTime = MovieTime{0, 0}
 		for {
-			fmt.Println(formatMovieTime())
-			effect, ok := movie.Effects[formatMovieTime()]
+			fmt.Println(FormatMovieTime())
+			effect, ok := movie.Effects[FormatMovieTime()]
 			if ok {
 				for _, confEffect := range Conf.Effects {
 					if confEffect.EffectName == effect.EffectName {
@@ -143,8 +143,8 @@ func incrementTime() {
 	}
 }
 
-// MillisecondsToPosition converts Milliseconds to position format.
-func formatMovieTime() string {
+// FormatMovieTime converts Milliseconds to position format.
+func FormatMovieTime() string {
 	if currentMovieTime.dec == 0 {
 		return fmt.Sprint(currentMovieTime.sec)
 	}
