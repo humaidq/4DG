@@ -1,0 +1,20 @@
+image: archlinux
+packages:
+  - go
+sources:
+  - https://git.sr.ht/~humaid/_4dg
+tasks:
+  - setup: |
+      cd _4dg
+      go get ./...
+  - format: |
+      cd _4dg
+      go fmt $(go list ./... | grep -v /vendor/)
+      go vet $(go list ./... | grep -v /vendor/)
+  - test: |
+      cd _4dg
+      go test -cover -race $(go list ./... | grep -v /vendor/)
+  - build: |
+      cd _4dg
+      go build
+
